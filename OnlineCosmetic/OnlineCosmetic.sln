@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33403.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCosmetic", "OnlineCosmetic\OnlineCosmetic.csproj", "{0B1CD135-B5E8-417F-A3AC-9B84E7CA8463}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineCosmetic.Tests", "OnlineCosmetic.Tests\OnlineCosmetic.Tests.csproj", "{FA2FA794-5DC8-4338-9DD6-B00BE1EADAA1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B1CD135-B5E8-417F-A3AC-9B84E7CA8463}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B1CD135-B5E8-417F-A3AC-9B84E7CA8463}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B1CD135-B5E8-417F-A3AC-9B84E7CA8463}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B1CD135-B5E8-417F-A3AC-9B84E7CA8463}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA2FA794-5DC8-4338-9DD6-B00BE1EADAA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA2FA794-5DC8-4338-9DD6-B00BE1EADAA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA2FA794-5DC8-4338-9DD6-B00BE1EADAA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA2FA794-5DC8-4338-9DD6-B00BE1EADAA1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A9F0670-2945-49AB-BB35-8A78DF5C37D7}
+	EndGlobalSection
+EndGlobal

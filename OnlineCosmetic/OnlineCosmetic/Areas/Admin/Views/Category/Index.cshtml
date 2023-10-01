@@ -1,0 +1,126 @@
+﻿@model IEnumerable<OnlineCosmetic.Models.EF.Category>
+@{
+    ViewBag.Title = "Danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section NavHeaderItems
+{
+    <li class="nav-item d-none d-sm-inline-block">
+        <a href="/admin/home" class="nav-link">Trang chủ</a>
+    </li>
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Quản lý danh mục</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin/home">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Danh mục</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Danh sách danh mục</h3>
+
+                <a href="/admin/category/add" class="btn-sm btn-info ml-4" title="Thêm mới danh mục">Thêm</a>
+
+                <div class="card-tools">
+                </div>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    @*<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>*@
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover table-striped">
+                    <caption>Tổng: <i>@Model.Count()</i></caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Thứ tự</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr id="trow_@item.Id">
+                                    <th scope="row">@i</th>
+                                    <td>@item.Title</td>
+                                    <td>@item.Position</td>
+                                    <td>
+                                        <a href="/admin/category/edit/@item.Id" class="btn btn-success" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="btn btn-danger btn-delete" data-id="@item.Id" data-title="@item.Title" title="Xóa"><i class="far fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4">Không có bản ghi nào!</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+            @*<div class="card-footer">
+                  Footer
+                </div>*@
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.btn-delete', function () {
+                var id = $(this).data("id");
+                var title = $(this).data("title");
+                var conf = confirm(`Bạn có chắc muốn xóa "${title}" không?`);
+                if (conf === true) {
+                    $.ajax({
+                        url: '/admin/category/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (result) {
+                            if (result.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

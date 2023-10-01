@@ -1,0 +1,104 @@
+﻿@model OnlineCosmetic.Models.EF.Category
+@{
+    ViewBag.Title = "Cập nhật danh mục";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section NavHeaderItems
+{
+    <li class="nav-item d-none d-sm-inline-block">
+        <a href="/admin/home" class="nav-link">Trang chủ</a>
+    </li>
+    <li class="nav-item d-none d-sm-inline-block">
+        <a href="/admin/category" class="nav-link">Danh mục</a>
+    </li>
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Cập nhật danh mục (@Model.Title)</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin/home">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/admin/category">Danh mục</a></li>
+                        <li class="breadcrumb-item active">Cập nhật danh mục</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Thông tin danh mục</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    @*<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>*@
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="bs-stepper-content">
+                    @using (Html.BeginForm("Edit", "Category", FormMethod.Post, new { }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(false)
+                        @Html.HiddenFor(x => x.Id)
+                        <!-- your steps content here -->
+                        <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
+                            <div class="form-group">
+                                <label for="Title">Tên danh mục</label>
+                                @*<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">*@
+                                @Html.TextBoxFor(x => x.Title, Model.Title, new { @class = "form-control", @placeholder = "Tên danh mục", @id = "Title" })
+                                @Html.ValidationMessageFor(x => x.Title, null, new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Description">Mô tả</label>
+                                @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @placeholder = "Mô tả", @rows = "5", @value = Model.Description, @id = "Description" })
+                            </div>
+                            <div class="form-group">
+                                <label for="Position">Thứ tự</label>
+                                @Html.TextBoxFor(x => x.Position, new { @class = "form-control", @type = "number", @step = "1", @min = "1", @max = "10000", @value = Model.Position, @id = "Position" })
+                            </div>
+                            <div class="form-group">
+                                <label for="SEOTitle">Tiêu đề SEO</label>
+                                @Html.TextAreaFor(x => x.SEOTitle, new { @class = "form-control", @placeholder = "Tiêu đề SEO", @rows = "3", @value = Model.SEOTitle, @id = "SEOTitle" })
+                            </div>
+                            <div class="form-group">
+                                <label for="SEODescription">Mô tả SEO</label>
+                                @Html.TextAreaFor(x => x.SEODescription, new { @class = "form-control", @placeholder = "Mô tả SEO", @rows = "3", @value = Model.SEODescription, @id = "SEODescription" })
+                            </div>
+                            <div class="form-group">
+                                <label for="SEOKeywords">Từ khóa SEO</label>
+                                @Html.TextAreaFor(x => x.SEOKeywords, new { @class = "form-control", @placeholder = "Từ khóa SEO", @rows = "3", @value = Model.SEOKeywords, @id = "SEOKeywords" })
+                            </div>
+                            <a href="/admin/category" class="btn btn-secondary">Quay lại</a>
+                            <button type="submit" class="btn btn-warning">Cập nhật</button>
+                        </div>
+                    }
+                </div>
+            </div>
+            <!-- /.card-body -->
+            @*<div class="card-footer">
+                    Footer
+                </div>*@
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
