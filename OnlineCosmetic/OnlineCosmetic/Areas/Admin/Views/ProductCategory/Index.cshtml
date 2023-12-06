@@ -1,0 +1,176 @@
+﻿@model IEnumerable<OnlineCosmetic.Models.EF.ProductCategory>
+
+@{
+    ViewBag.Title = "Danh mục sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Content/clients/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/clients/dist/css/adminlte.min.css">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/Content/clients/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/clients/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/clients/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Quản lý danh mục sản phẩm</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin/home">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Danh mục sản phẩm</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Danh sách danh mục sản phẩm</h3>
+
+                <a href="/admin/productcategory/add" class="btn-sm btn-info ml-4" title="Thêm mới danh mục">Thêm</a>
+
+                <div class="card-tools">
+                </div>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    @*<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>*@
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên</th>
+                            <th>Mô tả</th>
+                            <th>Hình ảnh</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+                                <tr id="trow_@item.Id">
+                                    <td>@i</td>
+                                    <td>@item.Title</td>
+                                    <td>@item.Description</td>
+                                    <td><img src="@item.Icon" class="img-fluid img-thumbnail" alt="@item.Title" /></td>
+                                    <td>
+                                        <a href="/admin/productcategory/edit/@item.Id" class="btn btn-success" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                        <a href="#" class="btn btn-danger btn-delete" data-id="@item.Id" data-title="@item.Title" title="Xóa"><i class="far fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5">Không có bản ghi nào!</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên</th>
+                            <th>Mô tả</th>
+                            <th>Hình ảnh</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="~/Content/clients/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Content/clients/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="~/Content/clients/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/clients/plugins/jszip/jszip.min.js"></script>
+    <script src="~/Content/clients/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/Content/clients/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Content/clients/dist/js/adminlte.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('body').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                var title = $(this).data("title");
+                var conf = confirm(`Bạn có chắc muốn xóa "${title}" không?`);
+                if (conf === true) {
+                    $.ajax({
+                        url: '/admin/productcategory/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (result) {
+                            if (result.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+}

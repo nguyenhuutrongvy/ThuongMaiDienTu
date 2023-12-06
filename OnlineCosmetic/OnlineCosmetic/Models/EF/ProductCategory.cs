@@ -26,6 +26,14 @@ namespace OnlineCosmetic.Models.EF
         [StringLength(500, ErrorMessage = "Icon không được vượt quá 500 ký tự!")]
         public string Icon { get; set; }
 
+        public string Alias { get; set; }
+
+        public string SEOTitle { get; set; }
+
+        public string SEODescription { get; set; }
+
+        public string SEOKeywords { get; set; }
+
         public ICollection<Product> Products { get; set; }
     }
 }

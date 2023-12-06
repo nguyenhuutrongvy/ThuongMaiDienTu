@@ -34,6 +34,8 @@ namespace OnlineCosmetic.Models.EF
 
         public string SEOKeywords { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
         public ICollection<News> News { get; set; }
 
         public ICollection<Post> Posts { get; set; }

@@ -1,0 +1,334 @@
+﻿@model PagedList.PagedList<OnlineCosmetic.Models.EF.News>
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "Tin tức";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Content/clients/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/clients/dist/css/adminlte.min.css">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/Content/clients/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/clients/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/clients/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+}
+
+@*@section HeaderItems {
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/home" class="nav-link">Trang chủ</a>
+        </li>
+
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="/admin/category" class="nav-link">Danh mục</a>
+        </li>
+    }*@
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Quản lý tin tức</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/admin/home">Trang chủ</a></li>
+                        <li class="breadcrumb-item active">Tin tức</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Search box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Tìm kiếm tin tức</h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    @*<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                            <i class="fas fa-times"></i>
+                        </button>*@
+                </div>
+            </div>
+            <div class="card-body" style="display: block;">
+                <div class="container-fluid">
+                    <h2 class="text-center display-4">Tìm kiếm</h2>
+                    <div class="row">
+                        <div class="col-md-8 offset-md-2">
+                            @using (Html.BeginForm("index", "News", FormMethod.Get, new { }))
+                            {
+                                <div class="input-group">
+                                    @*<input type="search" class="form-control form-control-lg" placeholder="Nhập từ khóa tìm kiếm tại đây...">*@
+                                    @Html.TextBox("searchText", "", new { @class = "form-control form-control-lg", @placeholder = "Nhập từ khóa tìm kiếm tại đây..." })
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-lg btn-default">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            @*<div class="card-footer" style="display: block;">
+                    Footer
+                </div>*@
+            <!-- /.card-footer-->
+        </div>
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Danh sách tin tức</h3>
+
+                <a href="/admin/news/add" class="btn-sm btn-info ml-4" title="Thêm mới tin tức">Thêm</a>
+                <a href="#" class="btn-sm btn-danger ml-2" title="Xóa tin tức được chọn" id="BtnDeleteAll">Xóa</a>
+
+                <div class="card-tools">
+                </div>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    @*<button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                <i class="fas fa-times"></i>
+            </button>*@
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="SelectAll" /></th>
+                            <th>STT</th>
+                            <th>Hình ảnh</th>
+                            <th>Tiêu đề</th>
+                            <th>Mô tả</th>
+                            <th>Ngày tạo</th>
+                            <th>Hiển thị</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            int i = ((ViewBag.Page - 1) * ViewBag.PageSize) + 1;
+                            foreach (var item in Model)
+                            {
+                                var strCheck = item.IsActive
+                                    ? "<i class='fas fa-check text-success'></i>"
+                                    : "<i class='fas fa-times text-danger'></i>";
+                                <tr id="trow_@item.Id">
+                                    <td><input type="checkbox" class="cbkItem" value="@item.Id" /></td>
+                                    <td>@i</td>
+                                    <td><img src="@item.Image" class="img-fluid img-thumbnail" alt="@item.Title" /></td>
+                                    <td>@item.Title</td>
+                                    <td>@item.Description</td>
+                                    <td>@item.CreatedDate.ToString("yyy/MM/dd HH:mm:ss")</td>
+                                    <td class="text-center align-middle">
+                                        <a href="#" data-id="@item.Id" class="btn-active">@Html.Raw(strCheck)</a>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <a href="/admin/news/edit/@item.Id" class="btn btn-success" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                        <br />
+                                        <a href="#" class="btn btn-danger btn-delete mt-2" data-id="@item.Id" data-title="@item.Title" title="Xóa"><i class="far fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7">Không có bản ghi nào!</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th></th>
+                            <th>STT</th>
+                            <th>Hình ảnh</th>
+                            <th>Tiêu đề</th>
+                            <th>Mô tả</th>
+                            <th>Ngày tạo</th>
+                            <th>Hiển thị</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-6 text-right">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                    </div>
+                </div>
+            </div>
+            <!-- /.card-body -->
+            @*<div class="card-footer">
+                  Footer
+                </div>*@
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>
+
+@section scripts {
+    <!-- jQuery -->
+    <script src="~/Content/clients/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Content/clients/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="~/Content/clients/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/clients/plugins/jszip/jszip.min.js"></script>
+    <script src="~/Content/clients/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/Content/clients/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Content/clients/dist/js/adminlte.min.js"></script>
+
+    <script>
+        // Switch Active status
+        $(document).ready(function () {
+            $('body').on('click', '.btn-active', function (e) {
+                e.preventDefault();
+                var btn = $(this);
+                var id = btn.data("id");
+                $.ajax({
+                    url: '/admin/news/active',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (result) {
+                        //debugger;
+                        if (result.success) {
+                            if (result.status) {
+                                btn.html("<i class='fas fa-check text-success'></i>");
+                            } else {
+                                btn.html("<i class='fas fa-times text-danger'></i>");
+                            }
+                        }
+                    }
+                });
+            });
+        });
+
+        // Delete news
+        $(document).ready(function () {
+            $('body').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+                var id = $(this).data("id");
+                var title = $(this).data("title");
+                var conf = confirm(`Bạn có chắc muốn xóa "${title}" không?`);
+                if (conf === true) {
+                    $.ajax({
+                        url: '/admin/news/delete',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (result) {
+                            if (result.success) {
+                                $('#trow_' + id).remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // Checkbox
+        $(document).ready(function () {
+            $('body').on('click', '#BtnDeleteAll', function (e) {
+                e.preventDefault();
+                var str = "";
+                var checkBox = $(this).parents('.card').find('tr td input:checkbox');
+                var i = 0;
+                checkBox.each(function () {
+                    if (this.checked) {
+                        checkBox.attr('checked');
+                        var _id = $(this).val();
+                        if (i === 0) {
+                            str += _id;
+                        } else {
+                            str += "," + _id;
+                        }
+                        i++;
+                    }
+                });
+
+                if (str.length > 0) {
+                    var conf = confirm('Bạn có chắc muốn xóa bản ghi này không?');
+                    if (conf === true) {
+                        $.ajax({
+                            url: '/admin/news/deleteAll',
+                            type: 'POST',
+                            data: { ids: str },
+                            success: function (result) {
+                                if (result.success) {
+                                    location.reload();
+                                }
+                            }
+                        })
+                    }
+                }
+            });
+
+            $('body').on('change', '#SelectAll', function () {
+                var checkStatus = this.checked;
+                var checkBox = $(this).parents('.card-body').find('tr td input:checkbox');
+                checkBox.each(function () {
+                    this.checked = checkStatus;
+                    if (this.checked) {
+                        checkBox.attr('checked');
+                    }
+                });
+            });
+        });
+
+        // Table template
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+            });
+        });
+    </script>
+}

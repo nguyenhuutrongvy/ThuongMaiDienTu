@@ -30,9 +30,9 @@ namespace OnlineCosmetic.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 model.Alias = Models.Common.Filter.ConvertToURLSlug(model.Title);
-                model.CreatedDate = DateTime.UtcNow;
+                model.CreatedDate = DateTime.Now;
                 model.CreatedBy = "Admin";
-                model.ModifiedDate = DateTime.UtcNow;
+                model.ModifiedDate = DateTime.Now;
 
                 _context.Categories.Add(model);
                 _context.SaveChanges();
@@ -95,13 +95,13 @@ namespace OnlineCosmetic.Areas.Admin.Controllers
             Category item = _context.Categories.FirstOrDefault(c => c.Id == id);
             if (item != null)
             {
-                //var deleteItem = _context.Categories.Attach(item);
                 _context.Categories.Remove(item);
                 _context.SaveChanges();
 
                 return Json(new { success = true });
             }
             return Json(new { success = false });
+            //return Json(new { success = true });
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace OnlineCosmetic.Models.EF
 {
@@ -33,6 +34,7 @@ namespace OnlineCosmetic.Models.EF
         public string Description { get; set; }
 
         [MaxLength(int.MaxValue)]
+        [AllowHtml]
         public string Detail { get; set; }
 
         [MaxLength(4000, ErrorMessage = "Đường dẫn ảnh không được vượt quá 4000 ký tự!")]
@@ -59,6 +61,8 @@ namespace OnlineCosmetic.Models.EF
         public string SEODescription { get; set; }
 
         public string SEOKeywords { get; set; }
+
+        public bool IsActive { get; set; } = true;
 
         public virtual ProductCategory ProductCategory { get; set; }
 

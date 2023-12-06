@@ -1,15 +1,33 @@
 ﻿@model IEnumerable<OnlineCosmetic.Models.EF.Category>
+
 @{
     ViewBag.Title = "Danh mục";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
-@section NavHeaderItems
-{
+@section styles {
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Content/clients/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/clients/dist/css/adminlte.min.css">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="~/Content/clients/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/clients/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/Content/clients/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+}
+
+@*@section HeaderItems {
     <li class="nav-item d-none d-sm-inline-block">
         <a href="/admin/home" class="nav-link">Trang chủ</a>
     </li>
-}
+
+    <li class="nav-item d-none d-sm-inline-block">
+        <a href="/admin/news" class="nav-link">Tin tức</a>
+    </li>
+}*@
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -52,14 +70,51 @@
                 </div>
             </div>
             <div class="card-body">
-                <table class="table table-hover table-striped">
-                    <caption>Tổng: <i>@Model.Count()</i></caption>
+                @*<table class="table table-hover table-striped">
+                        <caption>Tổng: <i>@Model.Count()</i></caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Thứ tự</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                int i = 1;
+                                foreach (var item in Model)
+                                {
+                                    <tr id="trow_@item.Id">
+                                        <th scope="row">@i</th>
+                                        <td>@item.Title</td>
+                                        <td>@item.Position</td>
+                                        <td>
+                                            <a href="/admin/category/edit/@item.Id" class="btn btn-success" title="Cập nhật"><i class="fas fa-edit"></i></a>
+                                            <a href="#" class="btn btn-danger btn-delete" data-id="@item.Id" data-title="@item.Title" title="Xóa"><i class="far fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="4">Không có bản ghi nào!</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>*@
+
+                <table id="example2" class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">STT</th>
-                            <th scope="col">Tên</th>
-                            <th scope="col">Thứ tự</th>
-                            <th scope="col"></th>
+                            <th>STT</th>
+                            <th>Tên</th>
+                            <th>Thứ tự</th>
+                            <th>Hiển thị</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -69,9 +124,10 @@
                             foreach (var item in Model)
                             {
                                 <tr id="trow_@item.Id">
-                                    <th scope="row">@i</th>
+                                    <td>@i</td>
                                     <td>@item.Title</td>
                                     <td>@item.Position</td>
+                                    <td>@item.IsActive</td>
                                     <td>
                                         <a href="/admin/category/edit/@item.Id" class="btn btn-success" title="Cập nhật"><i class="fas fa-edit"></i></a>
                                         <a href="#" class="btn btn-danger btn-delete" data-id="@item.Id" data-title="@item.Title" title="Xóa"><i class="far fa-trash-alt"></i></a>
@@ -83,10 +139,19 @@
                         else
                         {
                             <tr>
-                                <td colspan="4">Không có bản ghi nào!</td>
+                                <td colspan="5">Không có bản ghi nào!</td>
                             </tr>
-                        }
+                        }                        
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên</th>
+                            <th>Thứ tự</th>
+                            <th>Hiển thị</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
             <!-- /.card-body -->
@@ -102,9 +167,30 @@
 </div>
 
 @section scripts {
+    <!-- jQuery -->
+    <script src="~/Content/clients/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Content/clients/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- DataTables  & Plugins -->
+    <script src="~/Content/clients/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/Content/clients/plugins/jszip/jszip.min.js"></script>
+    <script src="~/Content/clients/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/Content/clients/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/Content/clients/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/Content/clients/dist/js/adminlte.min.js"></script>
+
     <script>
         $(document).ready(function () {
-            $('body').on('click', '.btn-delete', function () {
+            $('body').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
                 var id = $(this).data("id");
                 var title = $(this).data("title");
                 var conf = confirm(`Bạn có chắc muốn xóa "${title}" không?`);
@@ -120,6 +206,22 @@
                         }
                     });
                 }
+            });
+        });
+
+        $(function () {
+            $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
             });
         });
     </script>
